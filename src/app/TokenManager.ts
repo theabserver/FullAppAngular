@@ -1,6 +1,6 @@
 export class TokenManager {
-  getToken() {
-    return localStorage.getItem('u_token');
+  getToken(){
+    return localStorage.getItem('u_token') || "";
   }
   setToken(token: string) {
     localStorage.setItem('u_token', token);

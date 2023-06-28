@@ -1,42 +1,46 @@
-import { NgModule , inject} from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from 'src/components/Navbar/Navbar.component';
 import { RouterModule, Routes } from '@angular/router';
-import { ArticlesComponent } from 'src/components/Articles/Articles.component';
-import { PostsComponent } from 'src/components/Posts/Posts.component';
-import { HomeComponent } from 'src/components/Home/Home.component';
-import { CommentsComponent } from 'src/components/Comments/Comments.component';
 import { ErrorComponent } from 'src/components/Error/Error.component';
 import { HttpClientModule } from "@angular/common/http";
 import { ArticlePipe } from 'src/services/article.pipe';
 import { LoginComponent } from 'src/components/Login/Login.component';
-import { FormsModule } from '@angular/forms' 
+import { FormsModule } from '@angular/forms'
 import { TokenManager } from './TokenManager';
+import { authGuard } from 'src/guard/LoginGuard';
+import { HomeComponent } from 'src/components/Home/Home.component';
+import { ArticlesComponent } from 'src/components/Articles/Articles.component';
+import { PostsComponent } from 'src/components/Posts/Posts.component';
+import { CommentsComponent } from 'src/components/Comments/Comments.component';
 import { LoginService } from 'src/services/login.service';
-import { map } from "rxjs/operators";
-
-
 const appRoutes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent, canActivate: [
-      () => inject(LoginService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
-    ]},
-  {path: 'article', component: ArticlesComponent},
-  {path: 'post', component: PostsComponent},
-  {path: 'comment', component: CommentsComponent},
-  {path: '**', component: ErrorComponent}
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: 'home', component: HomeComponent, canActivate: [authGuard]
+  },
+  {
+    path: 'article', component: ArticlesComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'post', component: PostsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'comment', component: CommentsComponent,
+    canActivate: [authGuard]
+  },
+  { path: '**', component: ErrorComponent }
 ]
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    ArticlesComponent,
-    PostsComponent,
-    HomeComponent,
     ErrorComponent,
     LoginComponent,
     ArticlePipe
@@ -48,7 +52,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule
   ],
-  providers: [TokenManager],
+  providers: [TokenManager, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Article } from 'src/models/article';
 import { ArticleService } from 'src/services/article.service';
@@ -5,7 +6,9 @@ import { ArticleService } from 'src/services/article.service';
   selector: 'app-Articles',
   templateUrl: './Articles.component.html',
   styleUrls: ['./Articles.component.css'],
-  providers: [ArticleService]
+  providers: [ArticleService],
+  imports: [CommonModule],
+  standalone: true
 })
 export class ArticlesComponent implements OnInit {
   articles:Article[] = [];

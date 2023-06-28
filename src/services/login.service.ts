@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap, BehaviorSubject, map } from 'rxjs';
+import { Observable, tap, BehaviorSubject, map, distinctUntilChanged } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/models/user';
 import { Router } from "@angular/router";
@@ -10,7 +10,7 @@ import { TokenManager } from 'src/app/TokenManager';
 })
 export class LoginService {
   private userSubject = new BehaviorSubject<User | null>(null);
-  userAuth = this.userSubject.asObservable();
+  userSubject$ = this.userSubject.asObservable().pipe(distinctUntilChanged());
 
   constructor(private http: HttpClient,  private readonly router: Router,  private tokenManager:TokenManager) {}
 
@@ -24,6 +24,7 @@ export class LoginService {
   }
 
   setAuthUser(user: User) {
+    console.log(user);
     this.userSubject.next(user);
   }
   logoff(){
@@ -31,5 +32,5 @@ export class LoginService {
     this.tokenManager.deleteToken()
     this.router.navigate(["/login"]);
   }
-  public isAuthenticated = this.userAuth.pipe(map((user) => !!user))
+  public isAuthenticated = this.userSubject$.pipe(map((user) => {console.log(user);return !!user}))
 }
