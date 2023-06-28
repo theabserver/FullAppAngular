@@ -1,0 +1,41 @@
+<div>
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th class="px-6 py-3">Row</th>
+        <th class="px-6 py-3">Title</th>
+        <th class="px-6 py-3">Body</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        #articlesList
+        *ngFor="let article of articles"
+        class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+      >
+        <td class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+          {{ article.id }}
+        </td>
+        <td class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+          {{ article.title }}
+        </td>
+        <td class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+          {{ article.body }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="isLoading" class="flex justify-center my-10">
+    <div
+    class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+    role="status"
+  >
+    <span
+      class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+      >Loading...</span
+    >
+  </div>
+  </div>
+</div>
